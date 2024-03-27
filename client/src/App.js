@@ -1,10 +1,10 @@
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import { Home } from './pages/home';
-import { Auth } from './pages/auth';
-import { CreateRecipe } from './pages/create-recipe';
-import {SavedRecipe} from './pages/saved-recipe';
-import { Navbar } from './components/navbar';
+import  Home  from './pages/home';
+import  Auth from './pages/auth';
+import  CreateRecipe  from './pages/create-recipe';
+import SavedRecipe from './pages/saved-recipe';
+import  Navbar  from './components/navbar';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Auth />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/create-recipe" element={<CreateRecipe />} />
           <Route path="/saved-recipe" element={<SavedRecipe />} />
         </Routes>
