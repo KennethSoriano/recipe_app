@@ -1,13 +1,15 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { useGetUserID } from '../hooks/useGetUserID';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import { useGetUserID } from "../hooks/useGetUserID";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
-const CreateRecipe = () => {
+export const CreateRecipe = () => {
   const userID = useGetUserID();
-
+  const [cookies, _] = useCookies(["access_token"]);
   const [recipe, setRecipe] = useState({
     name: "",
+    description: "",
     ingredients: [],
     instructions: "",
     imageUrl: "",
@@ -16,13 +18,10 @@ const CreateRecipe = () => {
   });
 
   const navigate = useNavigate();
-  
+
   const handleChange = (event) => {
-    const {name, value} = event.target;
-    setRecipe((prevRecipe) => ({
-      ...prevRecipe,
-      [name]: value
-    }));
+    const { name, value } = event.target;
+    setRecipe({ ...recipe, [name]: value });
   };
 
   const handleIngredientChange = (event, index) => {
@@ -39,13 +38,19 @@ const CreateRecipe = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-      await axios.post('http://localhost:3001/recipes', {...recipe});
-      alert('Recipe created successfully!');
-      navigate('/');
-    } catch (err) {
-      console.error(err);
+      await axios.post(
+        "http://localhost:3001/recipes",
+        { ...recipe },
+        {
+          headers: { authorization: cookies.access_token },
+        }
+      );
+
+      alert("Recipe Created");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -108,6 +113,4 @@ const CreateRecipe = () => {
       </form>
     </div>
   );
-}
-
-export default CreateRecipe
+};
